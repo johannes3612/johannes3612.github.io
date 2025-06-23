@@ -1,169 +1,45 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Familie Boom Programma (Static)</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Family Tree</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Custom scrollbar for webkit browsers */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b; /* slate-800 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569; /* slate-600 */
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b; /* slate-500 */
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.6.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
-<body>
-  <div class="container">
-    <div id="login-form">
-      <h2>Login</h2>
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text" class="form-control" id="username" name="username" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-        <button type="button" class="btn btn-secondary" id="showRegister">Register</button>
-      </form>
-    </div>
-
-    <div id="register-form" style="display: none;">
-      <h2>Register</h2>
-      <form id="registerForm">
-        <div class="form-group">
-          <label for="newUsername">Username:</label>
-          <input type="text" class="form-control" id="newUsername" name="newUsername" required>
-        </div>
-        <div class="form-group">
-          <label for="newPassword">Password:</label>
-          <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-        </div>
-        <button type="submit" class="btn btn-success">Register</button>
-        <button type="button" class="btn btn-secondary" id="showLogin">Login</button>
-      </form>
-    </div>
-
-    <div id="main-content" style="display: none;">
-      <h1>Welcome to the Family Tree</h1>
-
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="true">Add Member</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Edit Member</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="view" aria-selected="false">View All</a>
-        </li>
-      </ul>
-
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
-          <!-- Add Member Form -->
-          <h2>Add Family Member</h2>
-          <form id="addMemberForm">
-            <div class="form-group">
-              <label for="lid_id">Lid ID (Unique):</label>
-              <input type="text" class="form-control" id="lid_id" name="lid_id" required>
-            </div>
-            <div class="form-group">
-              <label for="voornaam">Voornaam:</label>
-              <input type="text" class="form-control" id="voornaam" name="voornaam">
-            </div>
-                        <div class="form-group">
-              <label for="achternaam">achternaam:</label>
-              <input type="text" class="form-control" id="achternaam" name="achternaam">
-            </div>
-                        <div class="form-group">
-              <label for="geboortedatum">geboortedatum:</label>
-              <input type="text" class="form-control" id="geboortedatum" name="geboortedatum">
-            </div>
-                        <div class="form-group">
-              <label for="geslacht">geslacht:</label>
-              <input type="text" class="form-control" id="geslacht" name="geslacht">
-            </div>
-                        <div class="form-group">
-              <label for="ouder1_id">ouder1_id:</label>
-              <input type="text" class="form-control" id="ouder1_id" name="ouder1_id">
-            </div>
-                                    <div class="form-group">
-              <label for="ouder2_id">ouder2_id:</label>
-              <input type="text" class="form-control" id="ouder2_id" name="ouder2_id">
-            </div>
-                                                <div class="form-group">
-              <label for="partner_id">partner_id:</label>
-              <input type="text" class="form-control" id="partner_id" name="partner_id">
-            </div>
-
-            <!-- More form groups -->
-            <button type="submit" class="btn btn-primary">Add Member</button>
-          </form>
-        </div>
-
-        <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-          <!-- Edit Member Form -->
-            <h2>Edit Family Member</h2>
-          <form id="editMemberForm">
-                <div class="form-group">
-              <label for="edit_lid_id">Lid ID (Unique):</label>
-              <input type="text" class="form-control" id="edit_lid_id" name="edit_lid_id" required>
-              <button type="button" class="btn btn-secondary" id="loadMemberButton">Load</button>
-            </div>
-            <div class="form-group">
-              <label for="edit_voornaam">Voornaam:</label>
-              <input type="text" class="form-control" id="edit_voornaam" name="edit_voornaam">
-            </div>
-                        <div class="form-group">
-              <label for="edit_achternaam">achternaam:</label>
-              <input type="text" class="form-control" id="edit_achternaam" name="edit_achternaam">
-            </div>
-                        <div class="form-group">
-              <label for="edit_geboortedatum">geboortedatum:</label>
-              <input type="text" class="form-control" id="edit_geboortedatum" name="edit_geboortedatum">
-            </div>
-                        <div class="form-group">
-              <label for="edit_geslacht">geslacht:</label>
-              <input type="text" class="form-control" id="edit_geslacht" name="edit_geslacht">
-            </div>
-                        <div class="form-group">
-              <label for="edit_ouder1_id">ouder1_id:</label>
-              <input type="text" class="form-control" id="edit_ouder1_id" name="edit_ouder1_id">
-            </div>
-                                    <div class="form-group">
-              <label for="edit_ouder2_id">ouder2_id:</label>
-              <input type="text" class="form-control" id="edit_ouder2_id" name="edit_ouder2_id">
-            </div>
-                                                <div class="form-group">
-              <label for="edit_partner_id">partner_id:</label>
-              <input type="text" class="form-control" id="edit_partner_id" name="edit_partner_id">
-            </div>
-
-            <!-- More form groups -->
-            <button type="submit" class="btn btn-primary">Edit Member</button>
-          </form>
-        </div>
-
-        <div class="tab-pane fade" id="view" role="tabpanel" aria-labelledby="view-tab">
-          <h2>All Family Members</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lid ID</th>
-                <th>Voornaam</th>
-                <th>achternaam</th>
-                <th>geboortedatum</th>
-                <th>geslacht</th>
-                <th>ouder1_id</th>
-                <th>ouder2_id</th>
-                <th>partner_id</th>
-                <!-- more headers -->
-              </tr>
-            </thead>
-            <tbody id="memberTableBody">
-              <!-- Data will be loaded here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<script src="script.js"></script>
+<body class="bg-slate-900 text-slate-100">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
