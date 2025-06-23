@@ -1,0 +1,5 @@
+{
+  "name": "Digital Family Tree",
+  "description": "A web application to manage and visualize your family tree. Add, edit, and view family members, and explore their connections with AI-powered insights.",
+  "requestFramePermissions": []
+}
